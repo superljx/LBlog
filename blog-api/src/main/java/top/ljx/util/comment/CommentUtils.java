@@ -75,6 +75,13 @@ public class CommentUtils {
 		this.commentDefaultOpen = commentDefaultOpen;
 	}
 
+	private Boolean noticeDefault;
+
+	@Value("${comment.notice-default:true}")
+	public void setNoticeDefault(Boolean noticeDefault) {
+		this.noticeDefault = noticeDefault;
+	}
+
 	/**
 	 * 判断是否发送提醒
 	 * 6种情况：
@@ -90,7 +97,7 @@ public class CommentUtils {
 	 * @param parentComment    父评论
 	 */
 	public void judgeSendNotify(Comment comment, boolean isVisitorComment, top.ljx.entity.Comment parentComment) {
-		if (parentComment != null && !parentComment.getAdminComment() && parentComment.getNotice()) {
+		if (parentComment != null && !parentComment.getAdminComment() && Boolean.TRUE.equals(parentComment.getNotice())) {
 			//我回复访客的评论，且对方接收提醒，邮件提醒对方(3)
 			//访客回复访客的评论(即使是他自己先前的评论)，且对方接收提醒，邮件提醒对方(6)
 			sendMailToParentComment(parentComment, comment);
@@ -286,6 +293,7 @@ public class CommentUtils {
 		comment.setAdminComment(false);
 		comment.setCreateTime(new Date());
 		comment.setPublished(commentDefaultOpen);
+		comment.setNotice(noticeDefault);
 		comment.setEmail(comment.getEmail().trim());
 		comment.setIp(IpAddressUtils.getIpAddress(request));
 	}

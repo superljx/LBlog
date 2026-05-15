@@ -1,12 +1,13 @@
 package top.ljx.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -19,9 +20,9 @@ import java.util.Map;
  * @Author: Naccl
  * @Date: 2020-10-10
  */
-@EnableAsync
 @Component
 public class MailUtils {
+	private static final Logger log = LoggerFactory.getLogger(MailUtils.class);
 	@Autowired
 	private JavaMailSender javaMailSender;
 	@Autowired
@@ -39,7 +40,7 @@ public class MailUtils {
 			message.setText(content);
 			javaMailSender.send(message);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Failed to send simple mail to [{}] with subject [{}]", toAccount, subject, e);
 		}
 	}
 
@@ -57,7 +58,7 @@ public class MailUtils {
 			messageHelper.setText(process, true);
 			javaMailSender.send(mimeMessage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Failed to send template mail [{}] to [{}] with subject [{}]", template, toAccount, subject, e);
 		}
 	}
 }
