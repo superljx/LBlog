@@ -84,13 +84,7 @@ public class CommentUtils {
 
 	/**
 	 * 判断是否发送提醒
-	 * 6种情况：
-	 * 1.我以父评论提交：不用提醒
-	 * 2.我回复我自己：不用提醒
-	 * 3.我回复访客的评论：只提醒该访客
-	 * 4.访客以父评论提交：只提醒我自己
-	 * 5.访客回复我的评论：只提醒我自己
-	 * 6.访客回复访客的评论(即使是他自己先前的评论)：提醒我自己和他回复的评论
+	 * 回复评论时只通知被回复者，不再额外通知博主
 	 *
 	 * @param comment          当前收到的评论
 	 * @param isVisitorComment 是否访客评论
@@ -98,14 +92,11 @@ public class CommentUtils {
 	 */
 	public void judgeSendNotify(Comment comment, boolean isVisitorComment, top.ljx.entity.Comment parentComment) {
 		if (parentComment != null && !parentComment.getAdminComment() && Boolean.TRUE.equals(parentComment.getNotice())) {
-			//我回复访客的评论，且对方接收提醒，邮件提醒对方(3)
-			//访客回复访客的评论(即使是他自己先前的评论)，且对方接收提醒，邮件提醒对方(6)
+			// 通知被回复者
 			sendMailToParentComment(parentComment, comment);
 		}
-		if (isVisitorComment) {
-			//访客以父评论提交，只提醒我自己(4)
-			//访客回复我的评论，提醒我自己(5)
-			//访客回复访客的评论，不管对方是否接收提醒，都要提醒我有新评论(6)
+		if (isVisitorComment && parentComment == null) {
+			// 仅顶级访客评论通知博主
 			notifyMyself(comment);
 		}
 	}
