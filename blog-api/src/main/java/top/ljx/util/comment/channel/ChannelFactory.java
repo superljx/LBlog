@@ -22,6 +22,6 @@ public class ChannelFactory {
 		} else if (CommentConstants.MAIL.equalsIgnoreCase(channelName)) {
 			return SpringContextUtils.getBean("mailChannel", CommentNotifyChannel.class);
 		}
-		throw new RuntimeException("Unsupported value in [application.properties]: [comment.notify.channel]");
+		throw new RuntimeException("Unsupported value in [application.yml]: [comment.notify.channel]");
 	}
 }
