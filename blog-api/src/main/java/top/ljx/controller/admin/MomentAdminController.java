@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.ljx.annotation.AccessLimit;
 import top.ljx.annotation.OperationLogger;
 import top.ljx.entity.Moment;
 import top.ljx.model.vo.Result;
@@ -90,6 +91,7 @@ public class MomentAdminController {
 	 * @return
 	 */
 	@OperationLogger("发布动态")
+	@AccessLimit(seconds = 5, maxCount = 1, msg = "操作过于频繁，请稍后再试")
 	@PostMapping("/moment")
 	public Result saveMoment(@RequestBody Moment moment) {
 		if (moment.getCreateTime() == null) {
