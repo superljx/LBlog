@@ -142,6 +142,9 @@
 			}
 		},
 		watch: {
+			'form.content'(newValue) {
+				this.form.words = newValue ? newValue.length : 0
+			},
 			'form.words'(newValue) {
 				this.form.readTime = newValue ? Math.round(newValue / 200) : null
 			},
