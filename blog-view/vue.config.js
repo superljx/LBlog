@@ -1,4 +1,7 @@
 module.exports = {
+	devServer: {
+		historyApiFallback: true,
+	},
 	configureWebpack: {
 		resolve: {
 			alias: {

@@ -5,7 +5,7 @@ import {Message} from 'element-ui'
 
 const request = axios.create({
 	// baseURL: 'http://localhost:8090/admin/',
-	baseURL: 'http://39.107.83.230:8090/admin/',
+	baseURL: 'http://lblog.work:8090/admin/',
 	timeout: 5000
 })
 
