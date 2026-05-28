@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css'
 
 const request = axios.create({
 	// baseURL: 'http://localhost:8090/',
-	baseURL: 'https://lblog.work:8090/',
+	baseURL: 'https://lblog.work/api/',
 	timeout: 10000,
 })
 
