@@ -103,7 +103,7 @@
 		},
 		computed: {
 			blogId() {
-				return parseInt(this.$route.params.id)
+				return this.$route.params.id
 			},
 			...mapState(['siteInfo', 'focusMode'])
 		},
@@ -143,6 +143,7 @@
 		},
 		methods: {
 			getBlog(id = this.blogId) {
+				console.log(this.blogId)
 				//密码保护的文章，需要发送密码验证通过后保存在localStorage的Token
 				const blogToken = window.localStorage.getItem(`blog${id}`)
 				//如果有则发送博主身份Token
