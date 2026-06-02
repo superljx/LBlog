@@ -115,6 +115,8 @@
 				tagList: [],
 				dialogVisible: false,
 				radio: 1,
+				formSnapshot: '',
+				saved: false,
 				form: {
 					title: '',
 					firstPicture: '',
@@ -153,9 +155,45 @@
 			this.getData()
 			if (this.$route.params.id) {
 				this.getBlog(this.$route.params.id)
+			} else {
+				this.$nextTick(() => this.takeSnapshot())
 			}
 		},
+		mounted() {
+			window.addEventListener('beforeunload', this.handleBeforeUnload)
+		},
+		beforeDestroy() {
+			window.removeEventListener('beforeunload', this.handleBeforeUnload)
+		},
+		beforeRouteLeave(to, from, next) {
+			if (this.saved || !this.isDirty()) {
+				return next()
+			}
+			this.$confirm('当前内容尚未保存，确定要离开吗？', '提示', {
+				confirmButtonText: '离开',
+				cancelButtonText: '继续编辑',
+				type: 'warning'
+			}).then(() => {
+				next()
+			}).catch(() => {
+				next(false)
+			})
+		},
 		methods: {
+			takeSnapshot() {
+				this.formSnapshot = JSON.stringify(this.form)
+			},
+			isDirty() {
+				return this.formSnapshot !== JSON.stringify(this.form)
+			},
+			handleBeforeUnload(e) {
+				if (this.saved || !this.isDirty()) {
+					return
+				}
+				e.preventDefault()
+				e.returnValue = ''
+				return ''
+			},
 			getData() {
 				getCategoryAndTag().then(res => {
 					this.categoryList = res.data.categories
@@ -167,6 +205,7 @@
 					this.computeCategoryAndTag(res.data)
 					this.form = res.data
 					this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
+					this.$nextTick(() => this.takeSnapshot())
 				})
 			},
 			computeCategoryAndTag(blog) {
@@ -198,11 +237,13 @@
 							this.form.category = null
 							this.form.tags = null
 							updateBlog(this.form).then(res => {
+								this.saved = true
 								this.msgSuccess(res.msg)
 								this.$router.push('/blog/list')
 							})
 						} else {
 							saveBlog(this.form).then(res => {
+								this.saved = true
 								this.msgSuccess(res.msg)
 								this.$router.push('/blog/list')
 							})

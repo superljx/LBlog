@@ -30,6 +30,8 @@
 		components: {Breadcrumb},
 		data() {
 			return {
+				formSnapshot: '',
+				saved: false,
 				form: {
 					content: '',
 					createTime: null,
@@ -41,23 +43,62 @@
 		created() {
 			if (this.$route.params.id) {
 				this.getMoment(this.$route.params.id)
+			} else {
+				this.$nextTick(() => this.takeSnapshot())
 			}
 		},
+		mounted() {
+			window.addEventListener('beforeunload', this.handleBeforeUnload)
+		},
+		beforeDestroy() {
+			window.removeEventListener('beforeunload', this.handleBeforeUnload)
+		},
+		beforeRouteLeave(to, from, next) {
+			if (this.saved || !this.isDirty()) {
+				return next()
+			}
+			this.$confirm('当前内容尚未保存，确定要离开吗？', '提示', {
+				confirmButtonText: '离开',
+				cancelButtonText: '继续编辑',
+				type: 'warning'
+			}).then(() => {
+				next()
+			}).catch(() => {
+				next(false)
+			})
+		},
 		methods: {
+			takeSnapshot() {
+				this.formSnapshot = JSON.stringify(this.form)
+			},
+			isDirty() {
+				return this.formSnapshot !== JSON.stringify(this.form)
+			},
+			handleBeforeUnload(e) {
+				if (this.saved || !this.isDirty()) {
+					return
+				}
+				e.preventDefault()
+				e.returnValue = ''
+				return ''
+			},
 			getMoment(id) {
 				getMomentById(id).then(res => {
 					this.form = res.data
+					this.$nextTick(() => this.takeSnapshot())
 				})
 			},
 			submit(published) {
 				this.form.published = published
 				if (this.$route.params.id) {
 					updateMoment(this.form).then(res => {
+						this.saved = true
 						this.msgSuccess(res.msg)
 						this.$router.push('/blog/moment/list')
 					})
 				} else {
 					saveMoment(this.form).then(res => {
+						this.saved = true
 						this.msgSuccess(res.msg)
 						this.$router.push('/blog/moment/list')
 					})
