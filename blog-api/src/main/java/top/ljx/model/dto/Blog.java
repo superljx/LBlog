@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import top.ljx.annotation.SnowflakeId;
 import top.ljx.entity.Category;
 import top.ljx.entity.Tag;
 import top.ljx.entity.User;
@@ -22,6 +23,7 @@ import java.util.List;
 @Setter
 @ToString
 public class Blog {
+	@SnowflakeId
 	private Long id;
 	private String title;//文章标题
 	private String firstPicture;//文章首图，用于随机文章展示
