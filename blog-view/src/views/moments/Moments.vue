@@ -70,6 +70,20 @@
 					if (res.code === 200) {
 						this.momentList = res.data.list
 						this.totalPage = res.data.totalPage
+						//v-html渲染完毕后，渲染数学公式
+							this.$nextTick(() => {
+								if (typeof renderMathInElement !== 'undefined') {
+									document.querySelectorAll('.moment .typo').forEach(el => {
+										renderMathInElement(el, {
+											delimiters: [
+												{left: '$$', right: '$$', display: true},
+												{left: '$', right: '$', display: false},
+											],
+											throwOnError: false
+										})
+									})
+								}
+							})
 					} else {
 						this.msgError(res.msg)
 					}

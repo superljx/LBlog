@@ -153,9 +153,20 @@
 					if (res.code === 200) {
 						this.blog = res.data
 						document.title = this.blog.title + this.siteInfo.webTitleSuffix
-						//v-html渲染完毕后，渲染代码块样式
+						//v-html渲染完毕后，渲染代码块样式和数学公式
 						this.$nextTick(() => {
 							Prism.highlightAll()
+							//渲染数学公式（KaTeX）
+							const el = document.querySelector('.js-toc-content')
+							if (el && typeof renderMathInElement !== 'undefined') {
+								renderMathInElement(el, {
+									delimiters: [
+										{left: '$$', right: '$$', display: true},
+										{left: '$', right: '$', display: false},
+									],
+									throwOnError: false
+								})
+							}
 							//将文章渲染完成状态置为 true
 							this.$store.commit(SET_IS_BLOG_RENDER_COMPLETE, true)
 						})
