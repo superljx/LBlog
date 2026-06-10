@@ -221,7 +221,7 @@ public class CommentUtils {
 		long nicknameHash = HashUtils.getMurmurHash32(comment.getNickname());
 		//计算对应的头像
 		long num = nicknameHash % 6 + 1;
-		String avatar = "/img/comment-avatar/" + num + ".jpg";
+		String avatar = "https://static.lblog.work/img/public/comment-avatar/" + num + ".jpg";
 		comment.setAvatar(avatar);
 	}
 

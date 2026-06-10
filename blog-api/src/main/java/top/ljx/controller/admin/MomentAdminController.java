@@ -94,10 +94,20 @@ public class MomentAdminController {
 	@AccessLimit(seconds = 5, maxCount = 1, msg = "操作过于频繁，请稍后再试")
 	@PostMapping("/moment")
 	public Result saveMoment(@RequestBody Moment moment) {
+        if (moment == null) {
+            return Result.error("动态内容不能为空");
+        }
 		if (moment.getCreateTime() == null) {
 			moment.setCreateTime(new Date());
 		}
-		momentService.saveMoment(moment);
+        String content = moment.getContent();
+        String ossPrefix = "https://ljx-blog.oss-cn-beijing.aliyuncs.com";
+        String cdnPrefix = "https://static.lblog.work";
+        if (content.contains(ossPrefix)) {
+            content = content.replace(ossPrefix, cdnPrefix);
+        }
+        moment.setContent(content);
+        momentService.saveMoment(moment);
 		return Result.ok("添加成功");
 	}
 

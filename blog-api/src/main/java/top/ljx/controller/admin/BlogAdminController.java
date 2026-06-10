@@ -196,6 +196,26 @@ public class BlogAdminController {
             return Result.error("参数有误");
         }
 
+        // 替换掉阿里云的图片前缀
+        String ossPrefix = "https://ljx-blog.oss-cn-beijing.aliyuncs.com";
+        String cdnPrefix = "https://static.lblog.work";
+        String firstPicture = blog.getFirstPicture();
+        if (firstPicture.contains(ossPrefix)) {
+            firstPicture = firstPicture.replace(ossPrefix, cdnPrefix);
+        }
+        String content = blog.getContent();
+        if (content.contains(ossPrefix)) {
+            content = content.replace(ossPrefix, cdnPrefix);
+        }
+        String description = blog.getDescription();
+        if (description.contains(ossPrefix)) {
+            description = description.replace(ossPrefix, cdnPrefix);
+        }
+        blog.setContent(content);
+        blog.setDescription(description);
+        blog.setFirstPicture(firstPicture);
+
+
         //处理分类
         Object cate = blog.getCate();
         if (cate == null) {

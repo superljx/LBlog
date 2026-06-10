@@ -3,9 +3,9 @@ module.exports = {
 	 * @type {string}
 	 * @description 首页三张背景图
 	 */
-	bg1: 'https://cdn.naccl.top/blog/img/bg1.jpg',
-	bg2: 'https://cdn.naccl.top/blog/img/bg2.jpg',
-	bg3: 'https://cdn.naccl.top/blog/img/bg3.jpg',
+	bg1: 'https://static.lblog.work/img/1.jpg',
+	bg2: 'https://static.lblog.work/img/2.jpg',
+	bg3: 'https://static.lblog.work/img/3.jpg',
 
 	/**
 	 * @type {string}

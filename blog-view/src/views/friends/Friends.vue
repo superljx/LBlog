@@ -8,7 +8,7 @@
 				<a :href="item.website" target="_blank" rel="external nofollow noopener" class="card" :style="randomRGB()"
 				   v-for="(item,index) in friendList" :key="index" @click="addViews(item.nickname)">
 					<div class="image">
-						<img :src="item.avatar" onerror="this.src = '/img/error.png'">
+						<img :src="item.avatar" onerror="this.src = 'https://static.lblog.work/img/public/error.jpg'">
 					</div>
 					<div class="content">
 						<div class="header">{{ item.nickname }}</div>

@@ -283,13 +283,13 @@
 	}
 
 	.wave1 {
-		background: url('/img/header/wave1.png') repeat-x;
+		background: url('https://static.lblog.work/img/public/header/wave1.png') repeat-x;
 		height: 75px;
 		width: 100%;
 	}
 
 	.wave2 {
-		background: url('/img/header/wave2.png') repeat-x;
+		background: url('https://static.lblog.work/img/public/header/wave2.png') repeat-x;
 		height: 90px;
 		width: calc(100% + 100px);
 		left: -100px;
