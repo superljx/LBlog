@@ -3,6 +3,7 @@ package top.ljx.controller.admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,8 @@ import java.util.Date;
 public class MomentAdminController {
 	@Autowired
 	MomentService momentService;
+    @Value("${oss.prefix}")
+    private String ossPrefix;
 
 	/**
 	 * 分页查询动态列表
@@ -101,7 +104,7 @@ public class MomentAdminController {
 			moment.setCreateTime(new Date());
 		}
         String content = moment.getContent();
-        String ossPrefix = "https://ljx-blog.oss-cn-beijing.aliyuncs.com";
+
         String cdnPrefix = "https://static.lblog.work";
         if (content.contains(ossPrefix)) {
             content = content.replace(ossPrefix, cdnPrefix);

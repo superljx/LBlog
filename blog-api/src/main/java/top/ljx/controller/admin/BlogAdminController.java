@@ -3,6 +3,7 @@ package top.ljx.controller.admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,8 @@ public class BlogAdminController {
 	TagService tagService;
 	@Autowired
 	CommentService commentService;
+    @Value("${oss.prefix}")
+    private String ossPrefix;
 
 	/**
 	 * 获取博客文章列表
@@ -197,7 +200,6 @@ public class BlogAdminController {
         }
 
         // 替换掉阿里云的图片前缀
-        String ossPrefix = "https://ljx-blog.oss-cn-beijing.aliyuncs.com";
         String cdnPrefix = "https://static.lblog.work";
         String firstPicture = blog.getFirstPicture();
         if (firstPicture.contains(ossPrefix)) {
